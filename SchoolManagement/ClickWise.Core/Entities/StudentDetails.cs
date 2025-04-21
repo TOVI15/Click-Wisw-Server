@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -9,9 +10,12 @@ namespace ClickWise.Core.Entities
 {
     public class StudentDetails
     {
-       public StudentBasicInfo BasicInfo { get; set; } = null;
-        [Key]
-        public int StudentId { get; set; }  // מזהה ייחודי (FK מ-StudentBasicInfo)
+
+        [Key, ForeignKey("BasicInfo")]
+        public int Id { get; set; }
+
+
+        public StudentBasicInfo BasicInfo { get; set; }
 
         // פרטי הורים
         public string FatherName { get; set; } = string.Empty;// שם האב
@@ -43,5 +47,6 @@ namespace ClickWise.Core.Entities
         public string SynagogueName { get; set; } = string.Empty;  // שם בית המדרש/ר"מ
         public string SynagogueCity { get; set; } = string.Empty;  // עיר בית המדרש
         public string Notes { get; set; } = string.Empty; // הערות
+     
     }
 }

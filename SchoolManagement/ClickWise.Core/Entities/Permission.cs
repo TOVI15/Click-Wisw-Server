@@ -15,7 +15,7 @@ namespace ClickWise.Core.Entities
         [Required]
         public string PermissionType { get; set; } = string.Empty; // "view_students", "edit_students", "delete_students"
 
-        public DateTime GrantedAt { get; set; } = DateTime.UtcNow;
+        //public DateTime GrantedAt { get; set; } = DateTime.UtcNow;
 
         // קשר חזרה למשתמש
         public User User { get; set; } = null!;

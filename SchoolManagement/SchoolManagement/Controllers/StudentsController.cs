@@ -1,8 +1,10 @@
 ﻿using AutoMapper;
 using ClickWise.Core.DTOs;
+using ClickWise.Core.Entities;
 using ClickWise.Core.Services;
 using ClickWise.Service;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -45,14 +47,19 @@ namespace SchoolManagement.Controllers
 
         // POST api/<StudentsController>
         [HttpPost]
-        public async Task<ActionResult> Post([FromBody] StudentBasicInfoDTO student)
+        public async Task<ActionResult> Post([FromBody] StudentBasicInfo student)
         {
-            if (student == null) return BadRequest();
-            var createdUser = await _studentService.AddAsync(student);
+            if (student == null)
+            {
+                return
+                    BadRequest("Invalid student data.");
+            }
+            var createdUser = await _studentService.Add(student);
 
-            if (createdUser != null) return BadRequest();
+            if (createdUser == null) return BadRequest("Failed to create student.");
 
             return Ok(createdUser);
+            
         }
 
         // PUT api/<StudentsController>/5

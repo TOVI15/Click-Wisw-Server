@@ -8,7 +8,7 @@ namespace ClickWise.Core.DTOs
 {
     public class LoginDTO
     {
-        public UserDTO User { get; set; }=new UserDTO();
+        public UserDTO User { get; set; }= new UserDTO();
         public string Token { get; set; } = string.Empty;
 
     }

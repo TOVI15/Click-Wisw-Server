@@ -51,11 +51,11 @@ namespace ClickWise.Service
             var user = new User
             {
                 Name = userDto.UserName,
-                Email = userDto.Email,
+                Email = userDto.ID,
                 //PasswordHash =userDto.PasswordHash,
                 //BCrypt.Net.BCrypt.HashPassword(userDto.Password),
-                CreatedAt = DateTime.UtcNow,
-                UpDateAt = DateTime.UtcNow,
+                //CreatedAt = DateTime.UtcNow,
+                //UpDateAt = DateTime.UtcNow,
                 Role = "Editor",
             };
 

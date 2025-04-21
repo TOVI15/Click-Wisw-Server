@@ -13,8 +13,8 @@ namespace ClickWise.Core.DTOs
             public int Id { get; set; }
             public string DocumentType { get; set; } = string.Empty;
             public string FilePath { get; set; } = string.Empty;
-            public DateTime CreatedAt { get; set; }
-            public DateTime UpdatedAt { get; set; }
+            //public DateTime CreatedAt { get; set; }
+            //public DateTime UpdatedAt { get; set; }
             public string StudentFullName { get; set; } = string.Empty.ToString();
         }
 

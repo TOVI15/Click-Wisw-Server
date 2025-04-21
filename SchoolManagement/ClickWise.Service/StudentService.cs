@@ -23,16 +23,18 @@ namespace ClickWise.Service
             _mapper = mapper;
         }
 
-        public async Task<StudentBasicInfoDTO?> AddAsync(StudentBasicInfoDTO student)
+        public async Task<StudentBasicInfo?> Add(StudentBasicInfo student)
         {
             var studentToAdd = _mapper.Map<StudentBasicInfo>(student);
             if (studentToAdd != null)
             {
                 await _repositoryManager.Student.AddAsync(studentToAdd);
                 await _repositoryManager.SaveAsync();
-                return _mapper.Map<StudentBasicInfoDTO>(studentToAdd);
+                return _mapper.Map<StudentBasicInfo>(studentToAdd);
             }
             return null;
+
+
         }
 
         public async Task<bool> DeleteAsync(int id)

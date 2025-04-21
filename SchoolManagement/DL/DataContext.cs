@@ -12,10 +12,15 @@ namespace ClickWise.Data
         public DbSet<Documents> Documents { get; set; }
         public DbSet<User> Users { get; set; }
         public DbSet<Permission> Permissions { get; set; }
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            optionsBuilder.UseSqlServer(@"Server=(localdb)\MSSQLLocalDB;Database=localhost_cs");
-        }
+        public DataContext(DbContextOptions<DataContext> options) : base(options) { }
+        //protected override void OnModelCreating(ModelBuilder modelBuilder)
+        //{
+        //    modelBuilder.Entity<StudentBasicInfo>()
+        //        .HasOne(s => s.AdditionalInfo)
+        //        .WithOne(d => d.BasicInfo)
+        //        .HasForeignKey<StudentDetails>(d => d.StudentBasicInfoId); 
 
+        //    base.OnModelCreating(modelBuilder);
+        //}
     }
 }

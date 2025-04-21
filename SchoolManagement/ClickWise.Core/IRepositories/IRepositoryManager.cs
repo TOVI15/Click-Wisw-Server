@@ -16,6 +16,6 @@ namespace ClickWise.Core.Repositories
 
         IUserRepository User { get; }
 
-        public Task SaveAsync();
+        Task SaveAsync();
     }
 }

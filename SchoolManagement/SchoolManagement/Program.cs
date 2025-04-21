@@ -9,11 +9,26 @@ using ClickWise.Data.Repositories;
 using ClickWise.Service;
 using System.Text;
 using System.Text.Json.Serialization;
+using Microsoft.EntityFrameworkCore;
+using ClickWise.Core;
+using Amazon.S3;
+
 var builder = WebApplication.CreateBuilder(args);
 
-//builder.Services.AddAutoMapper(typeof(MappingProfile));
-builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+builder.Services.AddAutoMapper(typeof(MappingProfile));
 
+builder.Configuration.AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+                      .AddJsonFile("appsettings.Development.json", optional: true, reloadOnChange: true);
+
+var config = builder.Configuration;
+var awsOptions = config.GetSection("AWS");
+
+var s3Client = new AmazonS3Client(
+    awsOptions["AccessKey"],
+    awsOptions["SecretKey"],
+    Amazon.RegionEndpoint.GetBySystemName(awsOptions["Region"]));
+
+builder.Services.AddSingleton<IAmazonS3>(s3Client);
 
 builder.Services.AddAuthentication(options =>
 {
@@ -46,7 +61,17 @@ builder.Services.AddControllers().AddJsonOptions(options =>
     options.JsonSerializerOptions.WriteIndented = true;
 });
 
-builder.Services.AddControllers();
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowAll",
+        policy =>
+        {
+            policy.AllowAnyOrigin()
+                  .AllowAnyMethod()
+                  .AllowAnyHeader();
+        });
+});
+
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
@@ -60,12 +85,18 @@ builder.Services.AddScoped<IStudentService, StudentService>();
 builder.Services.AddScoped<IDocumentService, DocumentService>();
 builder.Services.AddScoped<IUserService, UserService>();
 
-builder.Services.AddDbContext<DataContext>();
-
-//builder.Services.AddAutoMapper(typeof(MappingProfile), typeof(PostModelsMappingProfile));
-
+builder.Services.AddDbContext<DataContext>(options =>
+    options.UseMySql(
+        builder.Configuration["ConnectionStrings:DefaultConnection"],
+        new MySqlServerVersion(new Version(8, 0, 41)),
+        mySqlOptions => mySqlOptions.EnableRetryOnFailure(
+            maxRetryCount: 5,    // מספר ניסיונות חוזרים
+            maxRetryDelay: TimeSpan.FromSeconds(10), // זמן המתנה בין הניסיונות
+            errorNumbersToAdd: null) // סוגי שגיאות נוספות שניתן להגדיר
+    ));
 
 var app = builder.Build();
+app.UseCors("AllowAll");
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
@@ -74,15 +105,14 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+
+
+app.UseHttpsRedirection();
+
 app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
 
-app.UseHttpsRedirection();
-
-app.UseAuthorization();
-
-app.MapControllers();
 
 app.Run();

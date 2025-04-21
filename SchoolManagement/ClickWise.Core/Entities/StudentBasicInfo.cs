@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Reflection.Metadata;
 using System.Text;
@@ -9,22 +11,28 @@ namespace ClickWise.Core.Entities
 {
     public class StudentBasicInfo
     {
+        [Key]
         public int Id { get; set; }  // מפתח ראשי
-        public string FirstName { get; set; } = string.Empty;
-        public string LastName { get; set; } = string.Empty;
-        public string KohenLeviIsrael { get; set; } = string.Empty;  // כהן/לוי/ישראל
-        public string IdentityNumber { get; set; } = string.Empty;
-        public string Address { get; set; } = string.Empty;
-        public string City { get; set; } = string.Empty;
-        public string Phone { get; set; }= string.Empty;
-        public string CountryOfBirth { get; set; } = string.Empty;
+
+  
+        public string FirstName { get; set; }
+
+        public string LastName { get; set; }
+        public string? Kohen_Levi_Israel { get; set; }
+
+        public string IdentityNumber { get; set; }
+        public string Address { get; set; }
+
+        public string City { get; set; }
+        public string Phone { get; set; }
+
+        public string CountryOfBirth { get; set; }
         public DateTime DateOfBirth { get; set; }
         public DateTime HebrewDateOfBirth { get; set; }
         public DateTime CreatedAt { get; set; } = DateTime.Now;
         public DateTime UpdatedAt { get; set; } = DateTime.Now;
-
-
         public StudentDetails AdditionalInfo { get; set; }
-        public ICollection<Documents> Documents { get; set; } = new List<Documents>();    
+
+        public Folders Folders { get; set; }
     }
 }

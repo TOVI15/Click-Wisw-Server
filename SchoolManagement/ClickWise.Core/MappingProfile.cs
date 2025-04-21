@@ -12,6 +12,9 @@ namespace ClickWise.Core
             CreateMap<StudentDetails, StudentDetailsDTO>().ReverseMap();
             CreateMap<Documents, DocumentsDTO>().ReverseMap();
             CreateMap<User, UserDTO>().ReverseMap();
+          
+
         }
+
     }
 }
