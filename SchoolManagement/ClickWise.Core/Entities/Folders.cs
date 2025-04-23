@@ -12,7 +12,7 @@ namespace ClickWise.Core.Entities
 
        
         [Required]
-        [MaxLength(255)]
+       
         public string Name { get; set; }
 
         public int OwnerId { get; set; }

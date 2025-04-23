@@ -36,12 +36,13 @@ namespace SchoolManagement.Controllers
 
         // GET api/<DocumentsController>/5
         [HttpGet("{id}")]
-        public ActionResult Get(int id)
+        public async Task<ActionResult> Get(int id)
         {
-            var documents = _documentService.GetByIdAsync(id);
-            if (documents == null) return NotFound(id);
-            return Ok(id);
+            var document = await _documentService.GetByIdAsync(id);
+            if (document == null) return NotFound(id);
+            return Ok(document);
         }
+
 
         // PUT api/<DocumentsController>/5
         [HttpPut("{id}")]
@@ -56,14 +57,16 @@ namespace SchoolManagement.Controllers
 
         // DELETE api/<DocumentsController>/5
         [HttpDelete("{id}")]
-        public async Task<ActionResult> Delete(DocumentsDTO documents)
+        public async Task<ActionResult> Delete(int id)
         {
-            var isDeleted = await _documentService.DeleteAsync(documents);
-            if (!isDeleted)
-            {
-                return NotFound();
-            }
+            var document = await _documentService.GetByIdAsync(id);
+            if (document == null) return NotFound();
+
+            var isDeleted = await _documentService.DeleteAsync(document);
+            if (!isDeleted) return NotFound();
+
             return NoContent();
         }
+
     }
 }

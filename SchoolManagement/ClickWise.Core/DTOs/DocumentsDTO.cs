@@ -8,15 +8,13 @@ namespace ClickWise.Core.DTOs
 {
     public class DocumentsDTO
     {
-        public class DocumentDTO
-        {
-            public int Id { get; set; }
-            public string DocumentType { get; set; } = string.Empty;
-            public string FilePath { get; set; } = string.Empty;
-            //public DateTime CreatedAt { get; set; }
-            //public DateTime UpdatedAt { get; set; }
-            public string StudentFullName { get; set; } = string.Empty.ToString();
-        }
-
+        public int Id { get; set; }
+        public int StudentId { get; set; }
+        public string DocumentName { get; set; }
+        public string S3Key { get; set; }
+        public string FilePath { get; set; }
+        public int FolderId { get; set; }
     }
+
+
 }

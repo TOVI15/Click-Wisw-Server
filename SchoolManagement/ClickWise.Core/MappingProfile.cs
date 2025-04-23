@@ -7,13 +7,10 @@ namespace ClickWise.Core
     public class MappingProfile: Profile
     {
         public MappingProfile() {
-
+            CreateMap<User, UserDTO>().ReverseMap();
             CreateMap<StudentBasicInfo, StudentBasicInfoDTO>().ReverseMap();
             CreateMap<StudentDetails, StudentDetailsDTO>().ReverseMap();
             CreateMap<Documents, DocumentsDTO>().ReverseMap();
-            CreateMap<User, UserDTO>().ReverseMap();
-          
-
         }
 
     }

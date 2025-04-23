@@ -16,13 +16,13 @@ namespace ClickWise.Core.Entities
         public string Name { get; set; } = string.Empty;
 
         public string Email { get; set; } = string.Empty;
-        public string Identity { get; set; }
+        public string Identity { get; set; } = string.Empty;
 
-        public string PasswordHash { get; set; } = string.Empty;
+        public string Password { get; set; } = string.Empty;
         public string Role { get; set; } = "staff"; // "admin", "staff"
 
-        public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
-        public DateTime UpDateAt { get; set; } = DateTime.UtcNow;
+        public DateTime CreatedAt { get; set; } = DateTime.Now;
+        public DateTime UpdatedAt { get; set; } = DateTime.Now;
 
         // קשר 1 לרבים לטבלת ההרשאות
         //public ICollection<Permission> Permissions { get; set; } = new List<Permission>();

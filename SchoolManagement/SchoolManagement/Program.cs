@@ -18,7 +18,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddAutoMapper(typeof(MappingProfile));
 
 builder.Configuration.AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
-                      .AddJsonFile("appsettings.Development.json", optional: true, reloadOnChange: true);
+                      .AddJsonFile("appsetting.Development.json", optional: true, reloadOnChange: true);
 
 var config = builder.Configuration;
 var awsOptions = config.GetSection("AWS");
@@ -61,6 +61,28 @@ builder.Services.AddControllers().AddJsonOptions(options =>
     options.JsonSerializerOptions.WriteIndented = true;
 });
 
+
+
+builder.Services.AddScoped<IUserRepository, UserRepository>();
+builder.Services.AddScoped<IDocumentsRepository, DocumentsRepository>();
+builder.Services.AddScoped<IRepositoryManager, RepositoryManager>();
+builder.Services.AddScoped<IStudentRepository, StudentRepository>();
+builder.Services.AddScoped(typeof(IRepository<>),typeof (Repository<>));
+
+builder.Services.AddScoped<IStudentService, StudentService>();
+builder.Services.AddScoped(typeof(IDocumentService),typeof(DocumentService));
+builder.Services.AddScoped<IUserService, UserService>();
+
+builder.Services.AddDbContext<DataContext>(options =>
+    options.UseMySql(
+        builder.Configuration["ConnectionStrings:DefaultConnection"],
+        new MySqlServerVersion(new Version(8, 0, 41)),
+        mySqlOptions => mySqlOptions.EnableRetryOnFailure(
+            maxRetryCount: 5,    // מספר ניסיונות חוזרים
+            maxRetryDelay: TimeSpan.FromSeconds(10), // זמן המתנה בין הניסיונות
+            errorNumbersToAdd: null) // סוגי שגיאות נוספות שניתן להגדיר
+    ));
+
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowAll",
@@ -75,25 +97,6 @@ builder.Services.AddCors(options =>
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-
-builder.Services.AddScoped<IUserRepository, UserRepository>();
-builder.Services.AddScoped<IDocumentsRepository, DocumentsRepository>();
-builder.Services.AddScoped<IRepositoryManager, RepositoryManager>();
-builder.Services.AddScoped<IStudentRepository, StudentRepository>();
-
-builder.Services.AddScoped<IStudentService, StudentService>();
-builder.Services.AddScoped<IDocumentService, DocumentService>();
-builder.Services.AddScoped<IUserService, UserService>();
-
-builder.Services.AddDbContext<DataContext>(options =>
-    options.UseMySql(
-        builder.Configuration["ConnectionStrings:DefaultConnection"],
-        new MySqlServerVersion(new Version(8, 0, 41)),
-        mySqlOptions => mySqlOptions.EnableRetryOnFailure(
-            maxRetryCount: 5,    // מספר ניסיונות חוזרים
-            maxRetryDelay: TimeSpan.FromSeconds(10), // זמן המתנה בין הניסיונות
-            errorNumbersToAdd: null) // סוגי שגיאות נוספות שניתן להגדיר
-    ));
 
 var app = builder.Build();
 app.UseCors("AllowAll");

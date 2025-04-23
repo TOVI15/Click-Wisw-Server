@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace ClickWise.Core.DTOs
 {
-    public class StudentDetailsDTO
-    {
-        public int StudentBasicInfoId { get; set; } 
+    
+        public class StudentDetailsDTO
+        {
         public string FatherName { get; set; } = string.Empty;
         public string FatherPhone { get; set; } = string.Empty;
         public string FatherCountryOfOrigin { get; set; } = string.Empty;
@@ -20,7 +20,7 @@ namespace ClickWise.Core.DTOs
         public string MotherCountryOfOrigin { get; set; } = string.Empty;
         public string MotherPreviousFamily { get; set; } = string.Empty;
         public string PreviousSchool { get; set; } = string.Empty;
-        public string PreviousSchoolAddress { get; set; } = string.Empty;   
+        public string PreviousSchoolAddress { get; set; } = string.Empty;
         public string PreviousSchoolCity { get; set; } = string.Empty;
         public string PreviousSchoolPhone { get; set; } = string.Empty;
         public string PreviousSchoolFax { get; set; } = string.Empty;
@@ -31,7 +31,9 @@ namespace ClickWise.Core.DTOs
         public string StudyTrack { get; set; } = string.Empty;
         public string SynagogueName { get; set; } = string.Empty;
         public string SynagogueCity { get; set; } = string.Empty;
-        public string Notes { get; set; } = string.Empty;
+        public string? Notes { get; set; } = string.Empty;
     }
+
+
 }
 

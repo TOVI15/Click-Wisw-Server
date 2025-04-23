@@ -3,6 +3,7 @@ using System;
 using ClickWise.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ClickWise.Data.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20250421192210_not-500")]
+    partial class not500
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -199,6 +202,7 @@ namespace ClickWise.Data.Migrations
                         .HasColumnType("longtext");
 
                     b.Property<string>("Notes")
+                        .IsRequired()
                         .HasColumnType("longtext");
 
                     b.Property<string>("PreviousSchool")
@@ -245,9 +249,6 @@ namespace ClickWise.Data.Migrations
                         .IsRequired()
                         .HasColumnType("longtext");
 
-                    b.Property<DateTime>("UpdatedAt")
-                        .HasColumnType("datetime(6)");
-
                     b.Property<int>("YearsOfStudy")
                         .HasColumnType("int");
 
@@ -277,7 +278,7 @@ namespace ClickWise.Data.Migrations
                         .IsRequired()
                         .HasColumnType("longtext");
 
-                    b.Property<string>("Password")
+                    b.Property<string>("PasswordHash")
                         .IsRequired()
                         .HasColumnType("longtext");
 
@@ -285,7 +286,7 @@ namespace ClickWise.Data.Migrations
                         .IsRequired()
                         .HasColumnType("longtext");
 
-                    b.Property<DateTime>("UpdatedAt")
+                    b.Property<DateTime>("UpDateAt")
                         .HasColumnType("datetime(6)");
 
                     b.HasKey("Id");

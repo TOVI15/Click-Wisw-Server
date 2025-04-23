@@ -14,10 +14,10 @@ namespace ClickWise.Core.Entities
 
         
         [Required]
-        [MaxLength(255)]
+
         public string DocumentName { get; set; }
         [Required]
-        [MaxLength(500)]
+       
         public string S3Key { get; set; }
         public string FilePath { get; set; } = string.Empty;
         public DateTime CreatedAt { get; set; } = DateTime.Now;

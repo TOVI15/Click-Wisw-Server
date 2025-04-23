@@ -13,7 +13,7 @@ namespace ClickWise.Core.Services
         public Task<IEnumerable<StudentBasicInfoDTO>> GetAllAsync();
         public Task<StudentBasicInfoDTO> GetByIdAsync(int id);
         public Task<StudentBasicInfoDTO> GetByNameAsync(string name);
-        public Task<StudentBasicInfo?> Add(StudentBasicInfo student);
+        public Task<StudentBasicInfoDTO?> Add(StudentBasicInfoDTO student);
         public Task<StudentBasicInfoDTO?> UpdateAsync(int id, StudentBasicInfoDTO student);
         public Task<bool> DeleteAsync(int id);
     }

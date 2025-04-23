@@ -42,7 +42,7 @@ namespace ClickWise.Service
 
         public async Task<LoginDTO> RegisterAsync(UserDTO userDto)
         {
-            var currentUser = await _repositoryManager.User.GetUserByName(userDto.UserName);
+            var currentUser = await _repositoryManager.User.GetUserByName(userDto.Name);
             if (currentUser != null)
             {
                 return null;
@@ -50,8 +50,8 @@ namespace ClickWise.Service
 
             var user = new User
             {
-                Name = userDto.UserName,
-                Email = userDto.ID,
+                Name = userDto.Name,
+                Email = userDto.Identity,
                 //PasswordHash =userDto.PasswordHash,
                 //BCrypt.Net.BCrypt.HashPassword(userDto.Password),
                 //CreatedAt = DateTime.UtcNow,

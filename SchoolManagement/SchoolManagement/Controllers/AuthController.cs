@@ -25,11 +25,11 @@ namespace SchoolManagement.Controllers
         [HttpPost("login")]
         public async Task<ActionResult<LoginDTO>> LoginAsync([FromBody] LoginDTO login)
         {
-            if (string.IsNullOrWhiteSpace(login.User.ID) || string.IsNullOrWhiteSpace(login.User.Password))
+            if (string.IsNullOrWhiteSpace(login.User.Identity) || string.IsNullOrWhiteSpace(login.User.Password))
             {
                 return BadRequest("Email and password are required.");
             }
-            var user = await _authService.LoginAsync(login.User.ID, login.User.Password);
+            var user = await _authService.LoginAsync(login.User.Identity, login.User.Password);
             if (user == null)
             {
                 return Unauthorized();
@@ -40,7 +40,7 @@ namespace SchoolManagement.Controllers
         [HttpPost("register")]
         public async Task<ActionResult<LoginDTO>> RegisterAsync([FromBody] UserDTO user)
         {
-            if (string.IsNullOrWhiteSpace(user.ID) || string.IsNullOrWhiteSpace(user.Password))
+            if (string.IsNullOrWhiteSpace(user.Identity) || string.IsNullOrWhiteSpace(user.Password))
             {
                 return BadRequest("Email and password are required.");//400
             }

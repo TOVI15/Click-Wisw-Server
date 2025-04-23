@@ -48,7 +48,7 @@ namespace SchoolManagement.Controllers
 
         // POST api/<UsersController>
         [HttpPost]
-        [Authorize(Roles = "Admin")]
+        //[Authorize(Roles = "Admin")]
         public async Task<ActionResult> Post([FromBody] UserDTO userDTO)
         {
             if (userDTO == null)

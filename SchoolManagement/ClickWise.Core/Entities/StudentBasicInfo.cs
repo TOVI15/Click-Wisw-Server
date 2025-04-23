@@ -12,27 +12,23 @@ namespace ClickWise.Core.Entities
     public class StudentBasicInfo
     {
         [Key]
-        public int Id { get; set; }  // מפתח ראשי
+        public int Id { get; set; }
 
-  
-        public string FirstName { get; set; }
-
-        public string LastName { get; set; }
+        public string FirstName { get; set; } = string.Empty;
+        public string LastName { get; set; } = string.Empty;
         public string? Kohen_Levi_Israel { get; set; }
-
-        public string IdentityNumber { get; set; }
-        public string Address { get; set; }
-
-        public string City { get; set; }
-        public string Phone { get; set; }
-
-        public string CountryOfBirth { get; set; }
+        public string IdentityNumber { get; set; } = string.Empty;
+        public string Address { get; set; } = string.Empty;
+        public string City { get; set; } = string.Empty;
+        public string Phone { get; set; } = string.Empty;
+        public string CountryOfBirth { get; set; } = string.Empty;
         public DateTime DateOfBirth { get; set; }
         public DateTime HebrewDateOfBirth { get; set; }
+
         public DateTime CreatedAt { get; set; } = DateTime.Now;
         public DateTime UpdatedAt { get; set; } = DateTime.Now;
-        public StudentDetails AdditionalInfo { get; set; }
 
+        public StudentDetails AdditionalInfo { get; set; }
         public Folders Folders { get; set; }
     }
 }
