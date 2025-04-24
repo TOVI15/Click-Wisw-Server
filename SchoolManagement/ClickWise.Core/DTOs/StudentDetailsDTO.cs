@@ -19,19 +19,15 @@ namespace ClickWise.Core.DTOs
         public string MotherOccupation { get; set; } = string.Empty;
         public string MotherCountryOfOrigin { get; set; } = string.Empty;
         public string MotherPreviousFamily { get; set; } = string.Empty;
-        public string PreviousSchool { get; set; } = string.Empty;
-        public string PreviousSchoolAddress { get; set; } = string.Empty;
+        public string YeshivaName { get; set; } = string.Empty;
+        public string YearsOfStudy { get; set; } = string.Empty;
         public string PreviousSchoolCity { get; set; } = string.Empty;
         public string PreviousSchoolPhone { get; set; } = string.Empty;
-        public string PreviousSchoolFax { get; set; } = string.Empty;
         public string PreviousSchoolEmail { get; set; } = string.Empty;
-        public int YearsOfStudy { get; set; }
+        public string PreviousSchoolAddress { get; set; } = string.Empty;
         public string RoshYeshivaName { get; set; } = string.Empty;
         public string RoshYeshivaPhone { get; set; } = string.Empty;
-        public string StudyTrack { get; set; } = string.Empty;
-        public string SynagogueName { get; set; } = string.Empty;
-        public string SynagogueCity { get; set; } = string.Empty;
-        public string? Notes { get; set; } = string.Empty;
+        public string? Note { get; set; } = string.Empty;
     }
 
 

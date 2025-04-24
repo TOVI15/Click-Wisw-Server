@@ -16,14 +16,18 @@ namespace ClickWise.Core.Entities
 
         public string FirstName { get; set; } = string.Empty;
         public string LastName { get; set; } = string.Empty;
-        public string? Kohen_Levi_Israel { get; set; }
+        public string paymentMethod { get; set; } = string.Empty;
+        public string? Kohen_Levi_Israel { get; set; } = string.Empty;
         public string IdentityNumber { get; set; } = string.Empty;
         public string Address { get; set; } = string.Empty;
         public string City { get; set; } = string.Empty;
         public string Phone { get; set; } = string.Empty;
         public string CountryOfBirth { get; set; } = string.Empty;
+        public string BuildingNumber { get; set; } = string.Empty;
+
         public DateTime DateOfBirth { get; set; }
         public DateTime HebrewDateOfBirth { get; set; }
+        public string HealthInsurance { get; set; } = string.Empty;
 
         public DateTime CreatedAt { get; set; } = DateTime.Now;
         public DateTime UpdatedAt { get; set; } = DateTime.Now;

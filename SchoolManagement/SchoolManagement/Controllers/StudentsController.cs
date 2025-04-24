@@ -47,7 +47,7 @@ namespace SchoolManagement.Controllers
 
         // POST api/<StudentsController>
         [HttpPost]
-        public async Task<ActionResult> Post([FromBody] StudentBasicInfoDTO student)
+        public async Task<ActionResult> Post([FromForm] StudentBasicInfoDTO student)
         {
             if (student == null)
             {

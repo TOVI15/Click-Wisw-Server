@@ -17,12 +17,12 @@ namespace SchoolManagement.Controllers
         }
 
         [HttpGet("presigned-url")]
-        public async Task<IActionResult> GetPresignedUrl([FromQuery] string fileName)
+        public async Task<IActionResult> GetPresignedUrl([FromQuery] string folderName, [FromQuery] string fileName )
         {
             var request = new GetPreSignedUrlRequest
             {
                 BucketName = "click-wise-testpnoren",
-                Key = fileName,
+                Key = $"{folderName}/{fileName}",
                 Verb = HttpVerb.PUT,
                 Expires = DateTime.UtcNow.AddMinutes(5),
                 ContentType = "image/jpeg"

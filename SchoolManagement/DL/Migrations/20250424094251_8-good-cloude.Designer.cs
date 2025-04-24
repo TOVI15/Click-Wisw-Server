@@ -3,6 +3,7 @@ using System;
 using ClickWise.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ClickWise.Data.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20250424094251_8-good-cloude")]
+    partial class _8goodcloude
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -109,10 +112,6 @@ namespace ClickWise.Data.Migrations
                         .IsRequired()
                         .HasColumnType("longtext");
 
-                    b.Property<string>("BuildingNumber")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
                     b.Property<string>("City")
                         .IsRequired()
                         .HasColumnType("longtext");
@@ -128,10 +127,6 @@ namespace ClickWise.Data.Migrations
                         .HasColumnType("datetime(6)");
 
                     b.Property<string>("FirstName")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
-                    b.Property<string>("HealthInsurance")
                         .IsRequired()
                         .HasColumnType("longtext");
 
@@ -213,6 +208,10 @@ namespace ClickWise.Data.Migrations
                     b.Property<string>("Note")
                         .HasColumnType("longtext");
 
+                    b.Property<string>("PreviousSchool")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
                     b.Property<string>("PreviousSchoolAddress")
                         .IsRequired()
                         .HasColumnType("longtext");
@@ -222,6 +221,10 @@ namespace ClickWise.Data.Migrations
                         .HasColumnType("longtext");
 
                     b.Property<string>("PreviousSchoolEmail")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("PreviousSchoolFax")
                         .IsRequired()
                         .HasColumnType("longtext");
 
@@ -237,16 +240,23 @@ namespace ClickWise.Data.Migrations
                         .IsRequired()
                         .HasColumnType("longtext");
 
+                    b.Property<string>("StudyTrack")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("SynagogueCity")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("SynagogueName")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
                     b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("datetime(6)");
 
-                    b.Property<string>("YearsOfStudy")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
-                    b.Property<string>("YeshivaName")
-                        .IsRequired()
-                        .HasColumnType("longtext");
+                    b.Property<int>("YearsOfStudy")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
