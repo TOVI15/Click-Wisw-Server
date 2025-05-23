@@ -22,7 +22,6 @@ namespace ClickWise.Data.Repositories
         public async Task<T> AddAsync(T entity)
         {
             await _dbSet.AddAsync(entity);
-            await _context.SaveChangesAsync();
             return entity;
         }
 
@@ -48,29 +47,57 @@ namespace ClickWise.Data.Repositories
             {
                 return null;
             }
+
             var existingEntity = await _dbSet.FindAsync(id);
             if (existingEntity == null)
             {
                 return null;
             }
+
             var properties = typeof(T).GetProperties();
             var keyProperties = _context.Model.FindEntityType(typeof(T)).FindPrimaryKey().Properties;
+
             foreach (var property in properties)
             {
+                // בודק אם השדה הוא ה-Id (המפתח הראשי) ומדלג עליו
                 if (!keyProperties.Any(k => k.Name == property.Name) && property.CanWrite)
                 {
                     var newValue = property.GetValue(entity);
+                    if (property.Name == "IsActive")
+                    {
+                        var currentValue = property.GetValue(existingEntity);
+                        if (currentValue is bool currentBool && currentBool && !(newValue is bool newBool && newBool) )
+                        {
+                            continue; 
+                        }                     
+                    }
+                    if (property.Name == "Password")
+                    {
+                        if (newValue == null || string.IsNullOrWhiteSpace(newValue?.ToString()))
+                        {
+                            continue;
+                        }
+                    }
                     property.SetValue(existingEntity, newValue);
                 }
             }
+
             try
             {
                 await _context.SaveChangesAsync();
             }
-            catch (DbUpdateException)
+            catch (DbUpdateException ex)
             {
+                Console.WriteLine("------------------------------------------------ ");
+                Console.WriteLine("שגיאה בעדכון הנתונים: " + ex.Message);
+                Console.WriteLine("פרטי שגיאה: " + ex.InnerException?.Message);
+                foreach (var entry in ex.Entries)
+                {
+                    Console.WriteLine($"Entity {entry.Entity.GetType().Name} - State: {entry.State}");
+                }
                 return null;
             }
+
             return existingEntity;
         }
 

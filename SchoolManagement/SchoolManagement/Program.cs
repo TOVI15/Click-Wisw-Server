@@ -62,7 +62,7 @@ builder.Services.AddControllers().AddJsonOptions(options =>
 });
 
 
-
+builder.Services.AddScoped<IEmailSender, EmailSender>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IDocumentsRepository, DocumentsRepository>();
 builder.Services.AddScoped<IRepositoryManager, RepositoryManager>();
@@ -72,6 +72,7 @@ builder.Services.AddScoped(typeof(IRepository<>),typeof (Repository<>));
 builder.Services.AddScoped<IStudentService, StudentService>();
 builder.Services.AddScoped(typeof(IDocumentService),typeof(DocumentService));
 builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddScoped<IAuthService, AuthService>();
 
 builder.Services.AddDbContext<DataContext>(options =>
     options.UseMySql(
@@ -93,6 +94,7 @@ builder.Services.AddCors(options =>
                   .AllowAnyHeader();
         });
 });
+builder.Services.AddHttpClient();
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();

@@ -6,8 +6,6 @@ using ClickWise.Service;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
-// For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-
 namespace SchoolManagement.Controllers
 {
     [Route("api/[controller]")]
@@ -58,6 +56,7 @@ namespace SchoolManagement.Controllers
 
             if (createdUser == null) return BadRequest("Failed to create student.");
 
+
             return Ok(createdUser);
             
         }
@@ -82,7 +81,7 @@ namespace SchoolManagement.Controllers
             {
                 return NotFound();
             }
-            return NoContent();
+            return Ok();
         }
     }
 }

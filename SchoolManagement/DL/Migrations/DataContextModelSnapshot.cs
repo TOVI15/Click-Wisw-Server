@@ -19,43 +19,6 @@ namespace ClickWise.Data.Migrations
                 .HasAnnotation("ProductVersion", "7.0.20")
                 .HasAnnotation("Relational:MaxIdentifierLength", 64);
 
-            modelBuilder.Entity("ClickWise.Core.Entities.Documents", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime(6)");
-
-                    b.Property<string>("DocumentName")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
-                    b.Property<string>("FilePath")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
-                    b.Property<int>("FolderId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("S3Key")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
-                    b.Property<int>("StudentId")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("UpdatedAt")
-                        .HasColumnType("datetime(6)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("FolderId");
-
-                    b.ToTable("Documents");
-                });
-
             modelBuilder.Entity("ClickWise.Core.Entities.Folders", b =>
                 {
                     b.Property<int>("Id")
@@ -64,19 +27,23 @@ namespace ClickWise.Data.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime(6)");
 
-                    b.Property<string>("Name")
+                    b.Property<string>("FilePath")
                         .IsRequired()
                         .HasColumnType("longtext");
 
-                    b.Property<int>("OwnerId")
-                        .HasColumnType("int");
+                    b.Property<string>("Name")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("S3Key")
+                        .IsRequired()
+                        .HasColumnType("longtext");
 
                     b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("datetime(6)");
 
                     b.HasKey("Id");
 
-                    b.ToTable("Folders");
+                    b.ToTable("Documents");
                 });
 
             modelBuilder.Entity("ClickWise.Core.Entities.Permission", b =>
@@ -106,19 +73,15 @@ namespace ClickWise.Data.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("Address")
-                        .IsRequired()
                         .HasColumnType("longtext");
 
                     b.Property<string>("BuildingNumber")
-                        .IsRequired()
                         .HasColumnType("longtext");
 
                     b.Property<string>("City")
-                        .IsRequired()
                         .HasColumnType("longtext");
 
                     b.Property<string>("CountryOfBirth")
-                        .IsRequired()
                         .HasColumnType("longtext");
 
                     b.Property<DateTime>("CreatedAt")
@@ -128,8 +91,10 @@ namespace ClickWise.Data.Migrations
                         .HasColumnType("datetime(6)");
 
                     b.Property<string>("FirstName")
-                        .IsRequired()
                         .HasColumnType("longtext");
+
+                    b.Property<int?>("GroupId")
+                        .HasColumnType("int");
 
                     b.Property<string>("HealthInsurance")
                         .IsRequired()
@@ -139,25 +104,27 @@ namespace ClickWise.Data.Migrations
                         .HasColumnType("datetime(6)");
 
                     b.Property<string>("IdentityNumber")
-                        .IsRequired()
                         .HasColumnType("longtext");
 
                     b.Property<string>("Kohen_Levi_Israel")
                         .HasColumnType("longtext");
 
                     b.Property<string>("LastName")
-                        .IsRequired()
                         .HasColumnType("longtext");
 
                     b.Property<string>("Phone")
-                        .IsRequired()
                         .HasColumnType("longtext");
+
+                    b.Property<bool?>("RegisterStudent")
+                        .HasColumnType("tinyint(1)");
 
                     b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("datetime(6)");
 
+                    b.Property<string>("folderKey")
+                        .HasColumnType("longtext");
+
                     b.Property<string>("paymentMethod")
-                        .IsRequired()
                         .HasColumnType("longtext");
 
                     b.HasKey("Id");
@@ -259,6 +226,9 @@ namespace ClickWise.Data.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
+                    b.Property<string>("Address")
+                        .HasColumnType("longtext");
+
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime(6)");
 
@@ -270,19 +240,24 @@ namespace ClickWise.Data.Migrations
                         .IsRequired()
                         .HasColumnType("longtext");
 
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("tinyint(1)");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("longtext");
 
                     b.Property<string>("Password")
-                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("Phone")
                         .HasColumnType("longtext");
 
                     b.Property<string>("Role")
                         .IsRequired()
                         .HasColumnType("longtext");
 
-                    b.Property<DateTime>("UpdatedAt")
+                    b.Property<DateTime>("UpDatedAt")
                         .HasColumnType("datetime(6)");
 
                     b.HasKey("Id");
@@ -290,22 +265,11 @@ namespace ClickWise.Data.Migrations
                     b.ToTable("Users");
                 });
 
-            modelBuilder.Entity("ClickWise.Core.Entities.Documents", b =>
-                {
-                    b.HasOne("ClickWise.Core.Entities.Folders", "Folder")
-                        .WithMany("Files")
-                        .HasForeignKey("FolderId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Folder");
-                });
-
             modelBuilder.Entity("ClickWise.Core.Entities.Folders", b =>
                 {
                     b.HasOne("ClickWise.Core.Entities.StudentBasicInfo", "Student")
-                        .WithOne("Folders")
-                        .HasForeignKey("ClickWise.Core.Entities.Folders", "Id")
+                        .WithMany()
+                        .HasForeignKey("Id")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -334,17 +298,9 @@ namespace ClickWise.Data.Migrations
                     b.Navigation("BasicInfo");
                 });
 
-            modelBuilder.Entity("ClickWise.Core.Entities.Folders", b =>
-                {
-                    b.Navigation("Files");
-                });
-
             modelBuilder.Entity("ClickWise.Core.Entities.StudentBasicInfo", b =>
                 {
                     b.Navigation("AdditionalInfo")
-                        .IsRequired();
-
-                    b.Navigation("Folders")
                         .IsRequired();
                 });
 #pragma warning restore 612, 618

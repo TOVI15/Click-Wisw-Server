@@ -4,8 +4,9 @@ using ClickWise.Core.Entities;
 using ClickWise.Core.Services;
 using ClickWise.Service;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using System.IO;
 
-// For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace SchoolManagement.Controllers
 {
@@ -14,12 +15,10 @@ namespace SchoolManagement.Controllers
     public class DocumentsController : ControllerBase
     {
         private readonly IDocumentService _documentService;
-        private readonly IMapper _mapper;
 
-        public DocumentsController(IDocumentService documentService, IMapper mapper)
+        public DocumentsController(IDocumentService documentService)
         {
             _documentService = documentService;
-            _mapper = mapper;
         }
 
         // GET: api/<DocumentsController>
@@ -46,13 +45,31 @@ namespace SchoolManagement.Controllers
 
         // PUT api/<DocumentsController>/5
         [HttpPut("{id}")]
-        public async Task<ActionResult> Put(int id, [FromBody] DocumentsDTO documents)
+        public async Task<ActionResult> Put(int id, [FromBody] Folders documents)
         {
             if (documents == null) return BadRequest(); ;
             var updatedUser = await _documentService.UploadAsync(id, documents);
             if (updatedUser == null) return NotFound();
             return Ok(updatedUser);
 
+        }
+        [HttpPost]
+        public async Task<IActionResult> CreateFolderRecord([FromBody] string S3Key)
+        {
+            var createFolder = await _documentService.AddAsync(S3Key);
+            if (createFolder == null) return NotFound();
+            return Ok(createFolder);
+        }
+        [HttpGet("folder-path")]
+        public async Task<IActionResult> GetFolderPath([FromQuery] int studentId)
+        {
+            var folder = await _documentService.GetByStudentIdAsync(studentId);
+
+
+            if (folder == null)
+                return NotFound();
+
+            return Ok(new { path = folder.S3Key });
         }
 
         // DELETE api/<DocumentsController>/5

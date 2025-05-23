@@ -24,25 +24,26 @@ namespace ClickWise.Service
             _mapper = mapper;
         }
 
-        public async Task<LoginDTO> LoginAsync(string email, string password)
+        public async Task<LoginUser> LoginAsync(string identity, string password)
         {
-            if (await ValidateUserAsync(email, password))
+            if (await ValidateUserAsync(identity, password))
             {
-                var user = await _repositoryManager.User.GetUserByName(email);
-                var token = GenerateJwtToken(user);
-                var userDTO = _mapper.Map<UserDTO>(user);
-                return new LoginDTO
+                var user = await _repositoryManager.User.GetUserByName(identity, password);
+                if (user == null)
+                    return null;
+
+                var token = GenerateJwtToken(user); return new LoginUser
                 {
-                    User = userDTO,
+                    FullName = user.Name,
                     Token = token
                 };
             }
             return null;
         }
 
-        public async Task<LoginDTO> RegisterAsync(UserDTO userDto)
+        public async Task<LoginUser> RegisterAsync(UserDTO userDto)
         {
-            var currentUser = await _repositoryManager.User.GetUserByName(userDto.Name);
+            var currentUser = await _repositoryManager.User.GetUserByName(userDto.Name , userDto.Email);
             if (currentUser != null)
             {
                 return null;
@@ -51,12 +52,12 @@ namespace ClickWise.Service
             var user = new User
             {
                 Name = userDto.Name,
-                Email = userDto.Identity,
+                Identity = userDto.Identity,
                 //PasswordHash =userDto.PasswordHash,
                 //BCrypt.Net.BCrypt.HashPassword(userDto.Password),
-                //CreatedAt = DateTime.UtcNow,
-                //UpDateAt = DateTime.UtcNow,
-                Role = "Editor",
+                CreatedAt = DateTime.UtcNow,
+                UpDatedAt = DateTime.UtcNow,
+                Role = "staff",
             };
 
             var result = await _repositoryManager.User.AddAsync(user);
@@ -70,18 +71,17 @@ namespace ClickWise.Service
             var token = GenerateJwtToken(result);
             var resultUserDto = _mapper.Map<UserDTO>(result);
 
-            return new LoginDTO
+            return new LoginUser
             {
-                User = resultUserDto,
+                //User = resultUserDto,
                 Token = token
             };
         }   
 
-        public async Task<bool> ValidateUserAsync(string email, string password)
+        public async Task<bool> ValidateUserAsync(string identity, string password)
         {
-            User user = await _repositoryManager.User.GetUserByName(email);
+            User user = await _repositoryManager.User.GetUserByName(identity, password);
             return user != null;
-                //&& BCrypt.Net.BCrypt.Verify(password, user.PasswordHash);
         }
 
         protected string GenerateJwtToken(User user)
@@ -92,14 +92,14 @@ namespace ClickWise.Service
             var claims = new List<Claim>
             {
               new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
-              new Claim(ClaimTypes.Email, user.Email), 
+              new Claim(ClaimTypes.Name, user.Name),
+              new Claim(ClaimTypes.Role, user.Role)
             };
 
-            // הוספת תפקידים כ-Claims
-            foreach (var role in user.Role)
-            {
-                claims.Add(new Claim(ClaimTypes.Role, role.ToString()));
-            }
+            //foreach (var role in user.Role)
+            //{
+            //    claims.Add(new Claim(ClaimTypes.Role, role.ToString()));
+            //}
             var token = new JwtSecurityToken(
                 issuer: _configuration["Jwt:Issuer"],
                 audience: _configuration["Jwt:Audience"],
@@ -115,4 +115,3 @@ namespace ClickWise.Service
 
 
 }
-

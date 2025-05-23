@@ -10,11 +10,14 @@ namespace ClickWise.Core.Services
 {
     public interface IStudentService
     {
-        public Task<IEnumerable<StudentBasicInfoDTO>> GetAllAsync();
+        public Task<IEnumerable<StudentBasicInfo>> GetAllAsync();
         public Task<StudentBasicInfoDTO> GetByIdAsync(int id);
         public Task<StudentBasicInfoDTO> GetByNameAsync(string name);
         public Task<StudentBasicInfoDTO?> Add(StudentBasicInfoDTO student);
         public Task<StudentBasicInfoDTO?> UpdateAsync(int id, StudentBasicInfoDTO student);
         public Task<bool> DeleteAsync(int id);
+        Task<IEnumerable<StudentAI>> GetAllAiDtoAsync();
+
+
     }
 }

@@ -11,9 +11,11 @@ namespace ClickWise.Core.Services
 {
     public interface IDocumentService
     {
-      public Task<IEnumerable<DocumentsDTO>> GetAllAsync();
-      public Task<DocumentsDTO?> GetByIdAsync(int id);
-      public Task<DocumentsDTO?> UploadAsync(int id, DocumentsDTO documentDto);
-      public Task<bool> DeleteAsync(DocumentsDTO documentDto);
+      public Task<IEnumerable<Folders>> GetAllAsync();
+      public Task<Folders?> GetByIdAsync(int id);
+      public Task<Folders?> UploadAsync(int id, Folders documentDto);
+      public Task<bool> DeleteAsync(Folders documentDto);
+      public Task<Folders?> AddAsync(string folder);
+      public Task<Folders?> GetByStudentIdAsync(int studentId);
     }
 }

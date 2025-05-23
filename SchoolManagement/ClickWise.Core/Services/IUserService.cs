@@ -10,11 +10,12 @@ namespace ClickWise.Core.Services
 {
     public interface IUserService
     {
-      public Task<IEnumerable<UserDTO>> GetAllAsync();
-      public Task<UserDTO> GetByIdAsync(int id);
-      public Task<UserDTO> GetUserByName(string name);
-      public Task<UserDTO?> AddAsync(UserDTO user);
-      public Task<UserDTO?> UpdateAsync(int id, UserDTO user);
-      public Task<bool> DeleteAsync(int id);
+      public Task<IEnumerable<User>> GetAllAsync();
+      public Task<User> GetByIdAsync(int id);
+      public Task<User> GetUserByName(string name);
+      public  Task AddAsync(UserDTO user);
+      public Task<User?> UpdateAsync(int id, UserDTO user);
+      public  Task<bool> DeleteAsync(int id);
+      public  Task<User> ResetPasswordAsync(User user, string token, string newPassword);
     }
 }

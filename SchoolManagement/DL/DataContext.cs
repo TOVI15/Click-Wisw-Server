@@ -9,7 +9,7 @@ namespace ClickWise.Data
     {
         public DbSet<StudentBasicInfo> Students {get; set;}
         public DbSet<StudentDetails> StudentDetails { get; set; }
-        public DbSet<Documents> Documents { get; set; }
+        public DbSet<Folders> Documents { get; set; }
         public DbSet<User> Users { get; set; }
         public DbSet<Permission> Permissions { get; set; }
         public DataContext(DbContextOptions<DataContext> options) : base(options) { }

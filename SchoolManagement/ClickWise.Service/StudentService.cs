@@ -29,11 +29,23 @@ namespace ClickWise.Service
             if (studentToAdd != null)
             {
                 await _repositoryManager.Student.AddAsync(studentToAdd);
+
                 await _repositoryManager.SaveAsync();
+
+                //if (!string.IsNullOrEmpty(student.folderKey))
+                //{
+                //    var folderEntity = await _repositoryManager.Documents.GetByS3KeyAsync(student.folderKey);
+                //    if (folderEntity != null)
+                //    {
+                //        folderEntity.Id = studentToAdd.Id; // foreign key = student id
+                //        folderEntity.UpdatedAt = DateTime.Now;
+
+                //        await _repositoryManager.SaveAsync();
+                //    }
+                //}
                 return _mapper.Map<StudentBasicInfoDTO>(studentToAdd);
             } 
             return null;
-
 
         }
 
@@ -50,10 +62,10 @@ namespace ClickWise.Service
             return true;
         }
 
-        public async Task<IEnumerable<StudentBasicInfoDTO>> GetAllAsync()
+        public async Task<IEnumerable<StudentBasicInfo>> GetAllAsync()
         {
-            var students = await _repositoryManager.Student.GetAllAsync();
-            return _mapper.Map<IEnumerable<StudentBasicInfoDTO>>(students);
+            var students = await _repositoryManager.Student.GetAllWithDetailsAsync();
+            return students;
         }
 
         public async Task<StudentBasicInfoDTO> GetByIdAsync(int id)
@@ -68,14 +80,50 @@ namespace ClickWise.Service
             return _mapper.Map<StudentBasicInfoDTO>(student);
         }
 
-        public async Task<StudentBasicInfoDTO?> UpdateAsync(int id, StudentBasicInfoDTO student)
+        public async Task<StudentBasicInfoDTO?> UpdateAsync(int id, StudentBasicInfoDTO studentDto)
         {
-            if (student == null) return null;
+            if (studentDto == null) return null;
 
-            var studentToUpdate = _mapper.Map<StudentBasicInfo>(student);
-            await _repositoryManager.Student.UpdateAsync(id, studentToUpdate);
+            // שליפת הישות הקיימת
+            var existingStudent = await _repositoryManager.Student.GetByIdWithDetailsAsync(id);
+            if (existingStudent == null) return null;
+            Console.WriteLine("===> existingStudent לפני מיפוי:");
+            
+            // מיפוי חכם רק לשדות שנשלחו
+            _mapper.Map(studentDto, existingStudent);
+
+            Console.WriteLine("===> existingStudent אחרי מיפוי:");
+           
+            // שמירה
             await _repositoryManager.SaveAsync();
-            return _mapper.Map<StudentBasicInfoDTO>(studentToUpdate);
+
+            // החזרת המידע המעודכן
+            return _mapper.Map<StudentBasicInfoDTO>(existingStudent);
+        }
+        public async Task<IEnumerable<StudentAI>> GetAllAiDtoAsync()
+        {
+            var students = await _repositoryManager.Student.GetAllWithDetailsAsync();
+
+            return students.Select(s => new StudentAI
+            {
+                Id = s.Id,
+                FirstName = s.FirstName,
+                LastName = s.LastName,
+                IdentityNumber = s.IdentityNumber,
+                Phone = s.Phone,
+                City = s.City,
+                DateOfBirth = s.DateOfBirth,
+                HealthInsurance = s.HealthInsurance,
+                UpdatedAt = s.UpdatedAt,
+                CreatedAt = s.CreatedAt,
+
+                FatherName = s.AdditionalInfo?.FatherName,
+                FatherPhone = s.AdditionalInfo?.FatherPhone,
+                MotherName = s.AdditionalInfo?.MotherName,
+                MotherPhone = s.AdditionalInfo?.MotherPhone,
+                YeshivaName = s.AdditionalInfo?.YeshivaName,
+                Note = s.AdditionalInfo?.Note
+            });
         }
 
     }

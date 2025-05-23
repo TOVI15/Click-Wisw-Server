@@ -9,6 +9,9 @@ namespace ClickWise.Core.IRepositories
 {
     public interface IUserRepository : IRepository<User>
     {
-      public Task<User?> GetUserByName(string name);
+      public Task<User?> GetUserByName(string name, string password);
+      public  Task<User?> GetUserByEmail(string name);
+      public Task<bool> DeleteAsync(int id);
+      public Task<User?> GetByNationalIdAsync(string nationalId);
     }
 }

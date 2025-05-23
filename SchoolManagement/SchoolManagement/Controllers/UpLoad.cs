@@ -24,12 +24,13 @@ namespace SchoolManagement.Controllers
                 BucketName = "click-wise-testpnoren",
                 Key = $"{folderName}/{fileName}",
                 Verb = HttpVerb.PUT,
-                Expires = DateTime.UtcNow.AddMinutes(5),
+                Expires = DateTime.UtcNow.AddMinutes(10),
                 ContentType = "image/jpeg"
             };
 
             string url = _s3Client.GetPreSignedURL(request);
             return Ok(new { url });
         }
+
     }
 }

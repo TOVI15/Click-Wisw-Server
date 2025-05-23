@@ -8,7 +8,9 @@ using System.Threading.Tasks;
 
 namespace ClickWise.Core.IRepositories
 {
-    public interface IDocumentsRepository : IRepository<Documents>
+    public interface IDocumentsRepository : IRepository<Folders>
     {
+        public Task<Folders?> GetByS3KeyAsync(string s3Key);
+        public Task<Folders?> GetByStudentIdAsync(int studentId);
     }
 }

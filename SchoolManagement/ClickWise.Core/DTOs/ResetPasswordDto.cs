@@ -6,10 +6,10 @@ using System.Threading.Tasks;
 
 namespace ClickWise.Core.DTOs
 {
-    public class LoginDTO
+    public class ResetPasswordDto
     {
-        public UserDTO User { get; set; }= new UserDTO();
-        public string Token { get; set; } = string.Empty;
-
+        public string Email { get; set; }
+        public string Token { get; set; }
+        public string NewPassword { get; set; }
     }
 }

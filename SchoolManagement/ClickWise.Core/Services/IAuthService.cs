@@ -10,8 +10,8 @@ namespace ClickWise.Core.Services
 {
     public interface IAuthService
     {
-      public Task<LoginDTO> LoginAsync(string email, string password);
-      public Task<LoginDTO> RegisterAsync(UserDTO userDto);
+      public Task<LoginUser> LoginAsync(string identity, string password);
+      public Task<LoginUser> RegisterAsync(UserDTO userDto);
       public Task<bool> ValidateUserAsync(string email, string password);
     }
 }

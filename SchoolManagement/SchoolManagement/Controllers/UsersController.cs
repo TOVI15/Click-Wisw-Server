@@ -2,10 +2,13 @@
 using ClickWise.Core.DTOs;
 using ClickWise.Core.Entities;
 using ClickWise.Core.Services;
+using ClickWise.Service;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System.Data;
 using System.Security.Claims;
+using System.Web;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -25,7 +28,6 @@ namespace SchoolManagement.Controllers
 
         // GET: api/<UsersController>
         [HttpGet]
-        [Authorize(Roles = "Admin")]
         public async Task<ActionResult> Get()
         {
             var users = await _userService.GetAllAsync();
@@ -38,7 +40,6 @@ namespace SchoolManagement.Controllers
 
         // GET api/<UsersController>/5
         [HttpGet("{id}")]
-        [Authorize(Roles = "Admin")]
         public async Task<ActionResult> Get(int id)
         {
             var user = await _userService.GetByIdAsync(id);
@@ -48,19 +49,34 @@ namespace SchoolManagement.Controllers
 
         // POST api/<UsersController>
         [HttpPost]
-        //[Authorize(Roles = "Admin")]
         public async Task<ActionResult> Post([FromBody] UserDTO userDTO)
         {
             if (userDTO == null)
             {
                 return BadRequest();
             }
-            var createdUser = await _userService.AddAsync(userDTO);
-            if (createdUser == null)
+            try
             {
-                return BadRequest();
+                await _userService.AddAsync(userDTO);
+                return Ok("העובד נוצר בהצלחה");
             }
-            return Ok(createdUser);
+            catch (Exception ex)
+            {
+                return BadRequest($"שגיאה: {ex.Message}");
+            }
+        }
+
+        [HttpPost("reset-password")]
+        public async Task<IActionResult> ResetPassword([FromBody] ResetPasswordDto dto)
+        {
+            var user = await _userService.GetUserByName(dto.Email);
+        
+            if (user == null)
+                return BadRequest("משתמש לא נמצא");
+
+            var result = await _userService.ResetPasswordAsync(user, dto.Token, dto.NewPassword);
+
+            return Ok();
         }
 
         // PUT api/<UsersController>/5
@@ -70,12 +86,6 @@ namespace SchoolManagement.Controllers
             if (userDTO == null)
             {
                 return BadRequest();
-            }
-
-            var currentUserId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-            if (currentUserId != id.ToString() && !User.IsInRole("Admin"))
-            {
-                return Forbid();
             }
 
             var updatedUser = await _userService.UpdateAsync(id, userDTO);
@@ -88,7 +98,6 @@ namespace SchoolManagement.Controllers
 
         // DELETE api/<UsersController>/5
         [HttpDelete("{id}")]
-        [Authorize(Roles = "Admin")]
         public async Task<ActionResult> Delete(int id)
         {
             var isDeleted = await _userService.DeleteAsync(id);

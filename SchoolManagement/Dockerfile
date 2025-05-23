@@ -11,12 +11,12 @@ ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
 
 # Corrected paths for .csproj files based on your directory structure
-COPY ["SchoolManagement/SchoolManagement/SchoolManagement.csproj", "SchoolManagement/"]
+COPY ["SchoolManagement/SchoolManagement.csproj", "SchoolManagement/"]
 COPY ["SchoolManagement.Data/SchoolManagement.Data.csproj", "SchoolManagement.Data/"]
 COPY ["SchoolManagement.Core/SchoolManagement.Core.csproj", "SchoolManagement.Core/"]
 COPY ["SchoolManagement.Service/SchoolManagement.Service.csproj", "SchoolManagement.Service/"]
 
-RUN dotnet restore "./SchoolManagement/SchoolManagement.csproj"
+RUN dotnet restore "SchoolManagement/SchoolManagement.csproj"
 COPY . . 
 WORKDIR "/src/SchoolManagement"
 RUN dotnet build "./SchoolManagement.csproj" -c $BUILD_CONFIGURATION -o /app/build

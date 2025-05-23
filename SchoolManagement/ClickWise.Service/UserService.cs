@@ -3,6 +3,8 @@ using ClickWise.Core.DTOs;
 using ClickWise.Core.Entities;
 using ClickWise.Core.Repositories;
 using ClickWise.Core.Services;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,24 +17,41 @@ namespace ClickWise.Service
     {
         private readonly IRepositoryManager _repositoryManager;
         private readonly IMapper _mapper;
+        private readonly IEmailSender _emailSender;
 
-        public UserService(IRepositoryManager repositoryManager, IMapper mapper)
+        public UserService(IRepositoryManager repositoryManager, IMapper mapper, IEmailSender emailSender)
         {        
             _repositoryManager = repositoryManager;
             _mapper = mapper;
+            _emailSender = emailSender;
         }
 
 
-        public async Task<UserDTO?> AddAsync(UserDTO user)
+        public async Task AddAsync(UserDTO user)
         {
-            var userToAdd = _mapper.Map<User>(user);
-            if (userToAdd != null)
+            var existing = await _repositoryManager.User.GetByNationalIdAsync(user.Identity);
+            if (existing != null)
+                throw new Exception("עובד עם ת.ז זו כבר קיים");
+
+
+            var employee = new User
             {
-                await _repositoryManager.User.AddAsync(userToAdd);
-                await _repositoryManager.SaveAsync();
-                return _mapper.Map<UserDTO>(userToAdd);
-            }
-            return null;
+
+                Identity = user.Identity,
+                Name = user.Name,
+                Email = user.Email,
+                Role = "Staff",
+                IsActive = false,
+                Password = null 
+            };
+            await _repositoryManager.User.AddAsync(employee);
+            await _repositoryManager.SaveAsync();
+            var token = Guid.NewGuid().ToString(); 
+            var callbackUrl = $"http://localhost:5173/reset-password?token={token}&email={employee.Email}";
+       
+
+            await _emailSender.SendEmailAsync(employee.Email, "קביעת סיסמה", $"הגדר סיסמה כאן: <a href='{callbackUrl}'>לחץ כאן</a>");
+
         }
 
         public async Task<bool> DeleteAsync(int id)
@@ -49,34 +68,47 @@ namespace ClickWise.Service
 
         }
 
-        public async Task<IEnumerable<UserDTO>> GetAllAsync()
-        {
-            var users = await _repositoryManager.User.GetAllAsync();
-            return _mapper.Map<IEnumerable<UserDTO>>(users);
 
+        public async Task<IEnumerable<User>> GetAllAsync()
+        {
+            return await _repositoryManager.User.GetAllAsync();
         }
 
-        public async Task<UserDTO> GetByIdAsync(int id)
+        public async Task<User> GetByIdAsync(int id)
         {
             var user = await _repositoryManager.User.GetByIdAsync(id);
-            return _mapper.Map<UserDTO>(user);
+            return user;
         }
 
-        public async Task<UserDTO> GetUserByName(string name)
+        public async Task<User> GetUserByName(string name)
         {
-            var user = await _repositoryManager.User.GetUserByName(name); 
-            return _mapper.Map<UserDTO>(user);
+            var user = await _repositoryManager.User.GetUserByEmail(name);
+            return user;
         }
 
-        public async Task<UserDTO?> UpdateAsync(int id, UserDTO user)
+        public async Task<User> ResetPasswordAsync(User user, string token, string newPassword)
+        {
+
+            user.Password = newPassword;
+            user.UpDatedAt = DateTime.UtcNow;
+            user.IsActive = true;
+
+            await _repositoryManager.User.UpdateAsync(user.Id, user);
+            await _repositoryManager.SaveAsync();
+            
+            return user;
+        }
+
+        public async Task<User?> UpdateAsync(int id, UserDTO user)
         {
             if (user == null) return null;
-            
+
             var userToUpdate = _mapper.Map<User>(user);
             await _repositoryManager.User.UpdateAsync(id, userToUpdate);
             await _repositoryManager.SaveAsync();
-            return _mapper.Map<UserDTO>(userToUpdate);
+            return userToUpdate;
 
         }
+
     }
 }

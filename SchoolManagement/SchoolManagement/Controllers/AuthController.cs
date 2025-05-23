@@ -1,9 +1,8 @@
 ﻿using AutoMapper;
 using ClickWise.Core.DTOs;
+using ClickWise.Core.Entities;
 using ClickWise.Core.Services;
 using Microsoft.AspNetCore.Mvc;
-
-// For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace SchoolManagement.Controllers
 {
@@ -23,13 +22,14 @@ namespace SchoolManagement.Controllers
 
         // POST api/<AuthController>
         [HttpPost("login")]
-        public async Task<ActionResult<LoginDTO>> LoginAsync([FromBody] LoginDTO login)
+        public async Task<ActionResult<LoginUser>> LoginAsync([FromBody] LoginRequestDTO login)
         {
-            if (string.IsNullOrWhiteSpace(login.User.Identity) || string.IsNullOrWhiteSpace(login.User.Password))
+            if (string.IsNullOrWhiteSpace(login.Identity) || string.IsNullOrWhiteSpace(login.Password))
             {
-                return BadRequest("Email and password are required.");
+                return BadRequest("TZ and password are required.");
             }
-            var user = await _authService.LoginAsync(login.User.Identity, login.User.Password);
+            var user = await _authService.LoginAsync(login.Identity, login.Password);
+
             if (user == null)
             {
                 return Unauthorized();
@@ -38,13 +38,13 @@ namespace SchoolManagement.Controllers
         }
 
         [HttpPost("register")]
-        public async Task<ActionResult<LoginDTO>> RegisterAsync([FromBody] UserDTO user)
+        public async Task<ActionResult<LoginUser>> RegisterAsync([FromBody] UserDTO user)
         {
             if (string.IsNullOrWhiteSpace(user.Identity) || string.IsNullOrWhiteSpace(user.Password))
             {
-                return BadRequest("Email and password are required.");//400
+                return BadRequest("Email and password are required.");
             }
-            //var hashedPassword = BCrypt.Net.BCrypt.HashPassword(user.Password);
+
             var userDto = _mapper.Map<UserDTO>(user);
             var userRegistered = await _authService.RegisterAsync(userDto);
             if (userRegistered == null)

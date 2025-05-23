@@ -8,8 +8,8 @@ namespace ClickWise.Core
     {
         public MappingProfile() {
             CreateMap<User, UserDTO>().ReverseMap();
-            CreateMap<StudentBasicInfo, StudentBasicInfoDTO>().ReverseMap();
-            CreateMap<StudentDetails, StudentDetailsDTO>().ReverseMap();
+            CreateMap<StudentBasicInfo, StudentBasicInfoDTO>().ReverseMap().ForAllMembers(opts => opts.Condition((src, dest, srcMember) => srcMember != null)); ;
+            CreateMap<StudentDetails, StudentDetailsDTO>().ReverseMap().ForAllMembers(opts => opts.Condition((src, dest, srcMember) => srcMember != null)); ;
             CreateMap<Documents, DocumentsDTO>().ReverseMap();
         }
 
