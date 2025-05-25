@@ -11,15 +11,20 @@ ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
 
 # Corrected paths for .csproj files based on your directory structure
-COPY ["SchoolManagement/SchoolManagement.csproj", "SchoolManagement/"]
-COPY ["ClickWise.Data/ClickWise.Data.csproj", "ClickWise.Data/"]
-COPY ["ClickWise.Core/ClickWise.Core.csproj", "ClickWise.Core/"]
-COPY ["ClickWise.Service/ClickWise.Service.csproj", "ClickWise.Service/"]
+COPY "SchoolManagement/SchoolManagement.csproj SchoolManagement/"
+COPY "DL/ClickWise.Data.csproj DL/"
+COPY "ClickWise.Core/ClickWise.Core.csproj ClickWise.Core/"
+COPY "ClickWise.Service/ClickWise.Service.csproj ClickWise.Service/"
 
+# שחזור תלויות
 RUN dotnet restore "SchoolManagement/SchoolManagement.csproj"
-COPY . . 
+
+# העתקת כל הקבצים
+COPY . .
+
+# בנייה
 WORKDIR "/src/SchoolManagement"
-RUN dotnet build "./SchoolManagement.csproj" -c $BUILD_CONFIGURATION -o /app/build
+RUN dotnet build "SchoolManagement.csproj" -c Release -o /app/build
 
 # This stage is used to publish the service project to be copied to the final stage
 FROM build AS publish
