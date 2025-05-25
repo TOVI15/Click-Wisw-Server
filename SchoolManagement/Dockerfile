@@ -11,8 +11,9 @@ ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
 
 # Corrected paths for .csproj files based on your directory structure
+# COPY ["SchoolManagement.csproj", "."]
 COPY ["SchoolManagement/SchoolManagement.csproj", "SchoolManagement/"]
-COPY ["ClickWise.Data/ClickWise.Data.csproj", "ClickWise.Data/"]
+COPY ["DL/ClickWise.Data.csproj", "ClickWise.Data/"]
 COPY ["ClickWise.Core/ClickWise.Core.csproj", "ClickWise.Core/"]
 COPY ["ClickWise.Service/ClickWise.Service.csproj", "ClickWise.Service/"]
 
