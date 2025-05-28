@@ -90,7 +90,7 @@ builder.Services.AddCors(options =>
     options.AddPolicy("AllowAll",
         policy =>
         {
-            policy.WithOrigins("https://cllickwise.onrender.com" , "https://click-wisw-server.onrender.com", "https://cllickwise-maneger.onrender.com")
+            policy.WithOrigins("https://cllickwise.onrender.com" , "https://click-wisw-server.onrender.com", "https://cllickwise-maneger.onrender.com" , "http://localhost:5173")
                    .AllowAnyMethod()
                   .AllowAnyHeader();
         });
