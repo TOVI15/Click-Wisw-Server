@@ -29,8 +29,6 @@ var s3Client = new AmazonS3Client(
     Amazon.RegionEndpoint.GetBySystemName(awsOptions["Region"]));
 
 builder.Services.AddSingleton<IAmazonS3>(s3Client);
-Console.WriteLine($"AWS AccessKey: {awsOptions["AccessKey"]}, Region: {awsOptions["Region"]}");
-
 builder.Services.AddAuthentication(options =>
 {
     options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
