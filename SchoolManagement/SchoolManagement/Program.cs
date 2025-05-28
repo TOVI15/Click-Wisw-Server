@@ -29,6 +29,7 @@ var s3Client = new AmazonS3Client(
     Amazon.RegionEndpoint.GetBySystemName(awsOptions["Region"]));
 
 builder.Services.AddSingleton<IAmazonS3>(s3Client);
+Console.WriteLine($"AWS AccessKey: {awsOptions["AccessKey"]}, Region: {awsOptions["Region"]}");
 
 builder.Services.AddAuthentication(options =>
 {
@@ -79,9 +80,9 @@ builder.Services.AddDbContext<DataContext>(options =>
         builder.Configuration["ConnectionStrings:DefaultConnection"],
         new MySqlServerVersion(new Version(8, 0, 41)),
         mySqlOptions => mySqlOptions.EnableRetryOnFailure(
-            maxRetryCount: 5,    // îñôø ðéñéåðåú çåæøéí
-            maxRetryDelay: TimeSpan.FromSeconds(10), // æîï äîúðä áéï äðéñéåðåú
-            errorNumbersToAdd: null) // ñåâé ùâéàåú ðåñôåú ùðéúï ìäâãéø
+            maxRetryCount: 5,    // Ã®Ã±Ã´Ã¸ Ã°Ã©Ã±Ã©Ã¥Ã°Ã¥Ãº Ã§Ã¥Ã¦Ã¸Ã©Ã­
+            maxRetryDelay: TimeSpan.FromSeconds(10), // Ã¦Ã®Ã¯ Ã¤Ã®ÃºÃ°Ã¤ Ã¡Ã©Ã¯ Ã¤Ã°Ã©Ã±Ã©Ã¥Ã°Ã¥Ãº
+            errorNumbersToAdd: null) // Ã±Ã¥Ã¢Ã© Ã¹Ã¢Ã©Ã Ã¥Ãº Ã°Ã¥Ã±Ã´Ã¥Ãº Ã¹Ã°Ã©ÃºÃ¯ Ã¬Ã¤Ã¢Ã£Ã©Ã¸
     ));
 
 builder.Services.AddCors(options =>
