@@ -23,8 +23,8 @@ namespace ClickWise.Core.DTOs
         public bool? RegisterStudent { get; set; } = false;
         public int? GroupId { get; set; } = 0;
 
-        public DateTime? DateOfBirth { get; set; }
-        public DateTime? HebrewDateOfBirth { get; set; }
+        public string? DateOfBirth { get; set; }
+        public string? HebrewDateOfBirth { get; set; }
         public string? HealthInsurance { get; set; } = string.Empty;
 
         public StudentDetailsDTO AdditionalInfo { get; set; } = new StudentDetailsDTO();

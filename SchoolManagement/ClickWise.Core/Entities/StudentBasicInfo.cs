@@ -30,8 +30,8 @@ namespace ClickWise.Core.Entities
 
         public int? GroupId { get; set; }
 
-        public DateTime DateOfBirth { get; set; }
-        public DateTime HebrewDateOfBirth { get; set; }
+        public string DateOfBirth { get; set; }
+        public string HebrewDateOfBirth { get; set; }
         public string HealthInsurance { get; set; } 
 
         public DateTime CreatedAt { get; set; }

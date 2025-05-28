@@ -15,7 +15,7 @@ namespace ClickWise.Core.Entities
             public string? IdentityNumber { get; set; }
             public string? Phone { get; set; }
             public string? City { get; set; }
-            public DateTime DateOfBirth { get; set; }
+            public string DateOfBirth { get; set; }
             public string? HealthInsurance { get; set; }
             public DateTime UpdatedAt { get; set; }
             public DateTime CreatedAt { get; set; }
