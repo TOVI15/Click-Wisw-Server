@@ -36,7 +36,6 @@ namespace ClickWise.Core.Entities
 
         public DateTime CreatedAt { get; set; }
         public DateTime UpdatedAt { get; set; }
-        //public Folders Folders { get; set; }
         public StudentDetails AdditionalInfo { get; set; }
         
     }
