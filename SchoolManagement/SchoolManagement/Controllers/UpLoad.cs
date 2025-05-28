@@ -29,6 +29,8 @@ namespace SchoolManagement.Controllers
             };
 
             string url = _s3Client.GetPreSignedURL(request);
+Console.WriteLine($"AWS AccessKey: {url}");
+            
             return Ok(new { url });
         }
 
