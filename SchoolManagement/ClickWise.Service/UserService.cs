@@ -47,7 +47,7 @@ namespace ClickWise.Service
             await _repositoryManager.User.AddAsync(employee);
             await _repositoryManager.SaveAsync();
             var token = Guid.NewGuid().ToString(); 
-            var callbackUrl = $"http://localhost:5173/reset-password?token={token}&email={employee.Email}";
+            var callbackUrl = $"http://cllickwise-maneger.onrender.com/reset-password?token={token}&email={employee.Email}";
        
 
             await _emailSender.SendEmailAsync(employee.Email, "קביעת סיסמה", $"הגדר סיסמה כאן: <a href='{callbackUrl}'>לחץ כאן</a>");
